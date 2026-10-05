@@ -85,6 +85,7 @@ function useCurtain(curtain) {
     await curtain.current.close()
 
     const next = latest.current
+    document.activeElement?.blur?.()
     shownPath.current = next.pathname
     setShown(next)
     await frame() // commit

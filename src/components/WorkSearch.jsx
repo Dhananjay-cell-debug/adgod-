@@ -38,7 +38,7 @@ function Highlight({ text, q }) {
   )
 }
 
-export default function WorkSearch({ query, onQuery }) {
+export default function WorkSearch({ query, onQuery, onExpand }) {
   const [open, setOpen] = useState(false)
   const [focused, setFocused] = useState(false)
   const [active, setActive] = useState(0)
@@ -50,6 +50,10 @@ export default function WorkSearch({ query, onQuery }) {
   const expanded = open || query.length > 0
   const results = query.trim() ? searchProjects(query).slice(0, MAX_ROWS) : []
   const showPanel = expanded && focused && query.trim().length > 0
+
+  useEffect(() => {
+    onExpand?.(expanded)
+  }, [expanded, onExpand])
 
   // the field is never wider than the space to the left of it
   useEffect(() => {

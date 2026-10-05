@@ -19,7 +19,7 @@
      A single-family system with a width axis reads as deliberate; two
      mismatched Google fonts read as a template. */
   --font-sans: 'Archivo', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+  --font-label: 'Poppins', ui-sans-serif, system-ui, sans-serif;
 
   /* ---- Motion ---- */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -84,15 +84,15 @@ html.lenis body {
   border-top: 1px solid var(--line);
 }
 
-/* Small functional metadata only — years, categories, field labels.
+/* Light Poppins, sentence case. Replaced tracked-caps mono, which read as
+   generic. Small functional metadata only — years, categories, field labels.
    Never a heading, never a section label. */
 @utility label {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  font-weight: 400;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  line-height: 1;
+  font-family: var(--font-label);
+  font-size: 12.5px;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
 }
 
 /* ---------- Display type ----------
@@ -352,4 +352,14 @@ html.lenis body {
 /* the shell draws the focus ring; the input inside it must not */
 .search-shell input:focus-visible {
   outline: none;
+}
+
+/* Search field and its neighbours share the right side of the filter bar.
+   When the field opens, sort and count fade out so nothing shows behind it. */
+.bar-meta {
+  transition: opacity 260ms var(--ease-out-expo);
+}
+.bar-meta[data-hidden='true'] {
+  opacity: 0;
+  pointer-events: none;
 }

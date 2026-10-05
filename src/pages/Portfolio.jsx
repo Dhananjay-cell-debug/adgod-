@@ -21,6 +21,7 @@ export default function Portfolio() {
   const [active, setActive] = useState('all')
   const [sort, setSort] = useState('new')
   const [query, setQuery] = useState('')
+  const [searching, setSearching] = useState(false)
 
   const list = useMemo(() => {
     const found = searchProjects(query)
@@ -81,7 +82,8 @@ export default function Portfolio() {
               </div>
             </LayoutGroup>
 
-            <div className="flex items-center gap-6">
+            <div className="flex w-full items-center justify-between gap-6 md:w-auto">
+              <div className="bar-meta flex items-center gap-6" data-hidden={searching}>
               <button
                 onClick={() => setSort((s) => (s === 'new' ? 'old' : 'new'))}
                 className="label text-ink-faint transition-colors hover:text-ink"
@@ -91,7 +93,8 @@ export default function Portfolio() {
               <span className="label text-ink-dim tabular-nums">
                 {count} {list.length === 1 ? 'project' : 'projects'}
               </span>
-              <WorkSearch query={query} onQuery={setQuery} />
+              </div>
+              <WorkSearch query={query} onQuery={setQuery} onExpand={setSearching} />
             </div>
           </div>
           <DrawLine />
