@@ -40,8 +40,8 @@ export default function Portfolio() {
     <>
       <section className="page pb-9 pt-[116px] md:pb-11 md:pt-[140px]">
         <h1 className="display t-display-xl max-w-[14ch]">
-          <WordsRise text="All" />{' '}
-          <WordsRise text="work." className="em" delay={0.14} />
+          <WordsRise text="Our" />{' '}
+          <WordsRise text="portfolio." className="em" delay={0.14} />
         </h1>
 
         <FadeUp delay={0.25}>

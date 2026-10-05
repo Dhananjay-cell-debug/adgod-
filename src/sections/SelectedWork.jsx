@@ -22,7 +22,7 @@ export default function SelectedWork() {
         <SectionHead
           title="Six recent"
           emphasis="films."
-          action="All work &rarr;"
+          action="Full portfolio &rarr;"
           actionTo="/portfolio"
         />
 

@@ -104,7 +104,7 @@ export default function Hero({ ready }) {
           <div className="flex shrink-0 items-baseline gap-8">
             <Link to="/portfolio" className="group inline-flex items-baseline gap-3">
               <span className="label inline-block border-b border-paper/70 pb-1 text-paper transition-colors duration-300 group-hover:border-signal group-hover:text-signal">
-                See the work
+                See the portfolio
               </span>
               <span className="label text-paper/45 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1">
                 &#8594;

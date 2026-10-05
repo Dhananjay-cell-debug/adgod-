@@ -125,7 +125,7 @@ export default function WorkSearch({ query, onQuery, onExpand }) {
           <button
             type="button"
             className="group flex h-full w-full items-center justify-center gap-2 text-ink"
-            aria-label="Search work"
+            aria-label="Search portfolio"
           >
             <Icon className="transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-rotate-12 group-hover:scale-110" />
             <span className="label">Search</span>
@@ -143,7 +143,7 @@ export default function WorkSearch({ query, onQuery, onExpand }) {
               onFocus={() => setFocused(true)}
               onKeyDown={onKeyDown}
               placeholder="Search a film, client or type"
-              aria-label="Search work"
+              aria-label="Search portfolio"
               className="h-full min-w-0 flex-1 bg-transparent px-3 text-[14px] text-ink outline-none placeholder:text-ink-faint focus-visible:outline-none"
             />
             <button

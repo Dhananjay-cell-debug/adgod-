@@ -1,22 +1,21 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { motion, AnimatePresence } from 'motion/react'
-import { DUR, EASE_OUT_EXPO, EASE_CUT } from '../lib/motion'
+import { motion } from 'motion/react'
+import { DUR, EASE_OUT_EXPO } from '../lib/motion'
 
 /**
  * Header.
  *
- * The site is two pages. The nav is therefore two items. Anything more is
- * inventing structure that doesn't exist.
+ * The site is two pages. The nav is therefore two items, shown as plain links
+ * at every size - no menu button on phones.
  */
 const NAV = [
-  { label: 'Work', to: '/portfolio' },
+  { label: 'Portfolio', to: '/portfolio' },
   { label: 'Contact', to: '/#contact' },
 ]
 
 export default function Header({ ready }) {
   const [scrolled, setScrolled] = useState(false)
-  const [open, setOpen] = useState(false)
   const { pathname } = useLocation()
   const onFilm = !scrolled && pathname === '/' // the hero is full-bleed footage
 
@@ -26,8 +25,6 @@ export default function Header({ ready }) {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
-
-  useEffect(() => setOpen(false), [pathname])
 
   return (
     <>
@@ -64,7 +61,7 @@ export default function Header({ ready }) {
               ADGOD
             </Link>
 
-            <nav className="hidden items-center gap-7 md:flex">
+            <nav className="flex items-center gap-5 md:gap-7">
               {NAV.map((n) => (
                 <Link
                   key={n.label}
@@ -78,47 +75,10 @@ export default function Header({ ready }) {
               ))}
             </nav>
 
-            <button
-              onClick={() => setOpen((v) => !v)}
-              className={`label relative z-[60] md:hidden ${
-                onFilm && !open ? 'text-paper' : 'text-ink'
-              }`}
-              aria-expanded={open}
-              aria-label="Menu"
-            >
-              {open ? 'Close' : 'Menu'}
-            </button>
           </motion.div>
         </div>
       </motion.header>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            className="fixed inset-0 z-[55] bg-paper md:hidden"
-            initial={{ clipPath: 'inset(0 0 100% 0)' }}
-            animate={{ clipPath: 'inset(0 0 0% 0)' }}
-            exit={{ clipPath: 'inset(0 0 100% 0)' }}
-            transition={{ duration: 0.6, ease: EASE_CUT }}
-          >
-            <div className="page flex h-full flex-col justify-end pb-16">
-              {NAV.map((n, i) => (
-                <motion.div
-                  key={n.label}
-                  initial={{ y: 40, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: DUR.base, ease: EASE_OUT_EXPO, delay: 0.25 + i * 0.06 }}
-                  className="hairline py-5"
-                >
-                  <Link to={n.to} className="display t-display-m block">
-                    {n.label}
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </>
   )
 }

@@ -48,7 +48,7 @@ export default function ProjectDetail() {
         <FadeUp>
           <div className="flex items-center gap-3">
             <Link to="/portfolio" className="label ul-draw inline-block text-ink-faint hover:text-ink">
-              ← Work
+              ← Portfolio
             </Link>
           </div>
         </FadeUp>
@@ -168,9 +168,9 @@ export default function ProjectDetail() {
         <div className="page">
           <DrawLine />
           <div className="flex items-end justify-between gap-6 pt-8">
-            <h2 className="display t-display-m">More work</h2>
+            <h2 className="display t-display-m">More projects</h2>
             <Link to="/portfolio" className="label ul-draw inline-block shrink-0 text-ink-dim hover:text-ink">
-              All work →
+              Full portfolio →
             </Link>
           </div>
         </div>
@@ -212,7 +212,7 @@ export default function ProjectDetail() {
           <div>
             <span className="label text-ink-faint">Next</span>
             <p className="display t-display-l mt-3 transition-colors duration-300 group-hover:text-ink">
-              {rel[0]?.title ?? 'Back to work'}
+              {rel[0]?.title ?? 'Back to portfolio'}
             </p>
           </div>
           <span className="label pb-3 text-ink-dim transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-2">
