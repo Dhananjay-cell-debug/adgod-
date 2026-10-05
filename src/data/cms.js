@@ -332,3 +332,24 @@ export const related = (slug, n = 3) => {
   const rest = projects.filter((p) => p.slug !== slug && p.category !== current.category)
   return [...same, ...rest].slice(0, n)
 }
+
+/* Search across title, client, type, year and excerpt. Title hits rank first.
+   Framer build: the CMS list's native Search component, same fields. */
+export const searchProjects = (query) => {
+  const q = query.trim().toLowerCase()
+  if (!q) return projects
+  const score = (p) => {
+    const title = p.title.toLowerCase()
+    if (title.startsWith(q)) return 0
+    if (title.includes(q)) return 1
+    if (p.client.toLowerCase().includes(q)) return 2
+    if (categoryName(p.category).toLowerCase().includes(q)) return 3
+    if (p.year.includes(q) || p.excerpt.toLowerCase().includes(q)) return 4
+    return -1
+  }
+  return projects
+    .map((p) => [p, score(p)])
+    .filter(([, n]) => n >= 0)
+    .sort((a, b) => a[1] - b[1] || a[0].order - b[0].order)
+    .map(([p]) => p)
+}

@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react'
 import { motion, AnimatePresence, LayoutGroup } from 'motion/react'
 import ProjectCard from '../components/ProjectCard'
+import WorkSearch from '../components/WorkSearch'
 import { DrawLine, FadeUp, WordsRise } from '../components/Reveal'
-import { projects, categories } from '../data/cms'
+import { categories, searchProjects } from '../data/cms'
 import { DUR, EASE_OUT_EXPO } from '../lib/motion'
 
 /**
@@ -19,16 +20,17 @@ import { DUR, EASE_OUT_EXPO } from '../lib/motion'
 export default function Portfolio() {
   const [active, setActive] = useState('all')
   const [sort, setSort] = useState('new')
+  const [query, setQuery] = useState('')
 
   const list = useMemo(() => {
-    const filtered =
-      active === 'all' ? projects : projects.filter((p) => p.category === active)
+    const found = searchProjects(query)
+    const filtered = active === 'all' ? found : found.filter((p) => p.category === active)
     return [...filtered].sort((a, b) =>
       sort === 'new'
         ? Number(b.year) - Number(a.year) || a.order - b.order
         : Number(a.year) - Number(b.year) || a.order - b.order,
     )
-  }, [active, sort])
+  }, [active, sort, query])
 
   const chips = [{ slug: 'all', name: 'All' }, ...categories]
   const count = String(list.length).padStart(2, '0')
@@ -89,6 +91,7 @@ export default function Portfolio() {
               <span className="label text-ink-dim tabular-nums">
                 {count} {list.length === 1 ? 'project' : 'projects'}
               </span>
+              <WorkSearch query={query} onQuery={setQuery} />
             </div>
           </div>
           <DrawLine />
@@ -98,7 +101,7 @@ export default function Portfolio() {
       <section className="page pb-20 pt-9 md:pb-28 md:pt-10">
         <AnimatePresence mode="popLayout">
           <motion.div
-            key={active + sort}
+            key={active + sort + query.trim()}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
@@ -112,7 +115,9 @@ export default function Portfolio() {
         </AnimatePresence>
 
         {list.length === 0 && (
-          <p className="t-body-l py-20 text-center text-ink-dim">No films in this category yet.</p>
+          <p className="t-body-l py-20 text-center text-ink-dim">
+            {query.trim() ? `No film matches “${query.trim()}”.` : 'No films in this category yet.'}
+          </p>
         )}
       </section>
     </>
