@@ -1,0 +1,297 @@
+@import 'tailwindcss';
+
+@theme {
+  /* ---- Colour ----
+     Warm paper ground, near-black ink. The films are the only dark, saturated
+     objects on the page — that contrast is the whole design. */
+  --color-paper: #f4f2ee;
+  --color-paper-2: #faf9f6;
+  --color-ink: #121110;
+  --color-ink-dim: #64605a;
+  --color-ink-faint: #9b968e;
+  --color-film: #0b0b0c;
+  --color-signal: #d2371a;
+
+  /* ---- Type ----
+     ONE family, carrying everything through weight and WIDTH.
+     Archivo is variable on both axes, so headlines can be genuinely expanded
+     — the look of a film title card — while body text stays normal width.
+     A single-family system with a width axis reads as deliberate; two
+     mismatched Google fonts read as a template. */
+  --font-sans: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+
+  /* ---- Motion ---- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-cut: cubic-bezier(0.83, 0, 0.17, 1);
+  --ease-curtain: cubic-bezier(0.76, 0, 0.16, 1);
+}
+
+:root {
+  --line: rgba(18, 17, 16, 0.11);
+  --line-strong: rgba(18, 17, 16, 0.22);
+  --page-x: clamp(20px, 4vw, 72px);
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-signal);
+  color: var(--color-paper);
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ---------- Utilities ---------- */
+
+@utility page {
+  padding-inline: var(--page-x);
+  max-width: 1560px;
+  margin-inline: auto;
+  width: 100%;
+}
+
+@utility hairline {
+  border-top: 1px solid var(--line);
+}
+
+/* Small functional metadata only — years, categories, field labels.
+   Never a heading, never a section label. */
+@utility label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+/* ---------- Display type ----------
+   Expanded width, heavy, very tight. This is the voice of the site. */
+.display {
+  font-family: var(--font-sans);
+  font-weight: 620;
+  font-stretch: 112%;
+  letter-spacing: -0.045em;
+  line-height: 0.86;
+}
+.t-display-xl {
+  font-size: clamp(2.7rem, 7.4vw, 6.4rem);
+}
+.t-display-l {
+  font-size: clamp(2rem, 4.4vw, 3.9rem);
+}
+.t-display-m {
+  font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+.t-display-s {
+  font-size: clamp(1.05rem, 1.35vw, 1.28rem);
+  font-weight: 560;
+  font-stretch: 105%;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+.t-body-l {
+  font-size: clamp(1rem, 1.05vw, 1.1rem);
+  line-height: 1.6;
+}
+
+/* Emphasis inside a headline is the accent colour, not an italic. */
+.em {
+  color: var(--color-signal);
+}
+
+/* ---------- Media frame ---------- */
+.frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--color-film);
+  box-shadow:
+    0 1px 2px rgba(18, 17, 16, 0.05),
+    0 18px 40px -26px rgba(18, 17, 16, 0.32);
+}
+.frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 0 1px rgba(18, 17, 16, 0.16);
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Film grain — one shared still texture, no blend mode.
+   An animated or blended grain forces a full re-composite every frame and is
+   what makes a site stutter on the machines clients actually demo on. */
+.grain::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.15;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+/* Paper texture — the ground is never flat white. Barely perceptible, but it
+   is the difference between "printed" and "browser default". */
+.paper-grain::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23p)' opacity='0.28'/%3E%3C/svg%3E");
+}
+
+/* ---------- Haze ----------
+   Two very large, very soft, slowly drifting lights. Transform-only, so it
+   costs nothing. This is what gives the dark sections air instead of a flat
+   black rectangle — the thing a colourist would call atmosphere. */
+.haze {
+  position: absolute;
+  inset: -30%;
+  pointer-events: none;
+  z-index: 1;
+  filter: blur(90px);
+  opacity: 0.5;
+  will-change: transform;
+}
+.haze::before,
+.haze::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+}
+.haze::before {
+  width: 55%;
+  height: 55%;
+  left: 8%;
+  top: 14%;
+  background: radial-gradient(circle, rgba(210, 55, 26, 0.5) 0%, transparent 68%);
+  animation: drift-a 34s ease-in-out infinite alternate;
+}
+.haze::after {
+  width: 60%;
+  height: 60%;
+  right: 6%;
+  bottom: 8%;
+  background: radial-gradient(circle, rgba(92, 140, 190, 0.42) 0%, transparent 68%);
+  animation: drift-b 42s ease-in-out infinite alternate;
+}
+@keyframes drift-a {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(14%, -8%, 0) scale(1.22);
+  }
+}
+@keyframes drift-b {
+  from {
+    transform: translate3d(0, 0, 0) scale(1.15);
+  }
+  to {
+    transform: translate3d(-12%, 9%, 0) scale(1);
+  }
+}
+
+/* ---------- Link underline ---------- */
+.ul-draw {
+  position: relative;
+}
+.ul-draw::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 340ms var(--ease-out-expo);
+}
+.ul-draw:hover::after,
+.ul-draw:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+:focus-visible {
+  outline: 1px solid var(--color-signal);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 9px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-paper);
+}
+::-webkit-scrollbar-thumb {
+  background: #d5d1c9;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #bbb6ad;
+}
+
+/* ---------- Boxed thumbnail ----------
+   A soft tile with the still inset as a rounded card, like a preset pack in a
+   shop. Used by ProjectCard on Home and Work. */
+.thumb-box {
+  background: #e8e5df;
+  border-radius: 14px;
+}
+.frame.thumb-card,
+.frame.thumb-card::after {
+  border-radius: 12px;
+}
+.frame.thumb-card {
+  box-shadow:
+    0 2px 4px rgba(18, 17, 16, 0.08),
+    0 22px 40px -18px rgba(18, 17, 16, 0.45);
+}
